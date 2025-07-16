@@ -19,6 +19,37 @@ spring:
         url: jdbc:mysql://localhost:3306/sharding_db?characterEncoding=utf8&useSSL=true&createDatabaseIfNotExist=true&serverTimezone=GMT&nullNamePatternMatchesAll=true
         username: user1
         password: 1234
+
+        # 连接池的配置信息
+        # 连接池初始连接数
+        initialSize: 5
+        # 允许的最小空闲连接数，空闲连接超时剔除过程会最少保留的连接数
+        minIdle: 5
+        # 允许的最大同时使用中（在被业务线程持有，还没有归还给druid)的连接数，建议值区间20-50
+        maxActive: 30
+        # 从连接池获取连接的最大等待时间
+        maxWait: 5000
+        # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+        timeBetweenEvictionRunsMillis: 300000
+        # 配置一个连接在池中最小生存的时间，单位是毫秒
+        minEvictableIdelTimeMills: 600000
+        # 配置一个连接在池中最大生存的时间，单位是毫秒
+        # maxEvictableIdelTimeMills: 900000
+        # 配置检测连接是否有效
+        validationQuery: SELECT 1
+        testWhileIdle: true
+        testOnBorrow: true
+        testOnReturn: false
+        # 配置监控统计拦截的filters, 去掉后监控界面sql无法统计，‘wall’ 用于防火墙
+        filters: stat,wall,log4j
+        # 强行关闭从连解池获取而长时间未归还给druid的连接（认为异常连解）
+        removeAbandoned: true
+        # 异常连接判断条件，超过180秒，则认为是异常的，需要强行关闭
+        removeAbandonedTimeout: 180
+        # 记录被判定为异常的连接
+        logAbandoned: true
+        # 网络读取超时，网络连接超时socketTimeout:对于线上业务小于5s，对于BI等执行时间较长的业务的sql 需要设置大一些
+        #connectionProperties: socketTimeout=60000;connectTimeout=1000
     # 分片的配置
     sharding:
       # 表的分片策略
